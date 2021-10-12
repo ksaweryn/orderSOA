@@ -20,9 +20,14 @@ import javax.ws.rs.core.Response.Status;
 import commerce.persistence.remote.orders.OrderInterface;
 import commerce.rest.vo.AddressVO;
 import commerce.rest.vo.OrderVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/orders")
 @RequestScoped
+@Api(tags = { "order" })
 public class OrdersRestService {
 
 	@EJB
@@ -31,6 +36,8 @@ public class OrdersRestService {
 	@GET
 	@Path("/total/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Retrieves total value of an order")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
 	public Response getOrderTotalValue(@PathParam("id") Long id) {
 		BigDecimal total = orderInterface.getOrdersTotalValue(id);
 		return Response.ok(total).build();
@@ -38,6 +45,11 @@ public class OrdersRestService {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Sets an order")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad requests"),
+			@ApiResponse(code = 406, message = "Not acceptable")})
 	public Response orders(OrderVO order, AddressVO address, List<Long> productsId, Long customerId) {
 		if (productsId.isEmpty()) {
 			Response.status(Status.BAD_REQUEST).entity("Please include products to the order").build();
@@ -57,6 +69,8 @@ public class OrdersRestService {
 
 	@DELETE
 	@Path("/{id}")
+	@ApiOperation(value = "Sets an order")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
 	public Response delete(@PathParam("id") Long id) {
 		orderInterface.deleteOrder(id);
 		return Response.ok().build();

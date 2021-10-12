@@ -70,7 +70,7 @@ public class CustomerRestService {
 
 	@PUT
 	@Path("/{id}")
-	@ApiOperation(value = "Updates existing to do")
+	@ApiOperation(value = "Updates existing customer")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Updated"), @ApiResponse(code = 404, message = "Not found") })
 	public Response update(@PathParam("id") Long id, CustomerVO customer) {
 		try {

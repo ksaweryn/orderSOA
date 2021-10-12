@@ -21,9 +21,14 @@ import javax.ws.rs.core.UriBuilder;
 import commerce.persistence.entities.Product;
 import commerce.persistence.remote.products.ProductInterface;
 import commerce.rest.vo.ProductVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/products")
 @RequestScoped
+@Api(tags = { "product" })
 public class ProductsRestService {
 
 	@EJB
@@ -31,20 +36,26 @@ public class ProductsRestService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response customers() {
+	@ApiOperation(value = "Retrieves list of products")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
+	public Response getProducts() {
 		return Response.ok(productInterface.getProducts()).build();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Retrieves a product by id")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
 	public Response get(@PathParam("id") Long id) {
 		return Response.ok(productInterface.getProduct(id)).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCustomer(ProductVO data) {
+	@ApiOperation(value = "Creates a product")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 200, message = "Success") })
+	public Response createProduct(ProductVO data) {
 		Product product;
 		try {
 			product = productInterface.createProduct(data.getDescription(), data.getPrice(), data.getWeigth());
@@ -59,6 +70,9 @@ public class ProductsRestService {
 
 	@PUT
 	@Path("/{id}")
+	@ApiOperation(value = "Updates a product data")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 406, message = "Not acceptable data") })
 	public Response update(@PathParam("id") Long id, ProductVO product) {
 		try {
 			productInterface.updateProduct(id, product.getDescription(), product.getPrice(), product.getWeigth());
@@ -71,6 +85,8 @@ public class ProductsRestService {
 
 	@DELETE
 	@Path("/{id}")
+	@ApiOperation(value = "Removes a product if exists and it does not belong to an order")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
 	public Response delete(@PathParam("id") Long id) {
 		productInterface.deleteProduct(id);
 		return Response.ok().build();

@@ -9,10 +9,7 @@ import io.swagger.jaxrs.config.BeanConfig;
 
 @ApplicationPath("/api")
 public class CommerceApplication extends Application {
-	public CommerceApplication() {
-		
-	}
-	
+
 	public CommerceApplication(@Context ServletConfig servletConfig) {
 		super();
 

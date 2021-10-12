@@ -18,9 +18,9 @@
 				value="org.hibernate.dialect.MySQL8Dialect" />
 			<property
 				name="javax.persistence.schema-generation.database.action"
-				value="drop-and-create" />
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="true" />
+				value="create" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
 		</properties>
 	</persistence-unit>
 </persistence>
