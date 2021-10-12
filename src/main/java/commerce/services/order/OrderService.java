@@ -37,24 +37,20 @@ public class OrderService implements OrderInterface {
 	public Order createOrder(OrderVO newOrder, AddressVO shippingAddress, List<Long> productsId, Long customerId)
 			throws SQLException, EntityNotFoundException {
 		List<Product> products = productsId.stream().map(productId -> {
-			Product product = productDao.findById(productId);
-			if (!Objects.isNull(product)) {
-				return product;
-			}
-			return product;
-		}).collect(Collectors.toList());
+			return productDao.findById(productId);
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 
+		if (Objects.isNull(products) || products.isEmpty()) {
+			throw new EntityNotFoundException(
+					"There is not any product linked to the order, please add at least a product");
+		}
 		Customer customer = customerDao.findById(customerId);
 		if (Objects.isNull(customer)) {
 			throw new EntityNotFoundException("There is no customer with id " + customerId);
 		}
 
-		Address address = new Address(
-				shippingAddress.getStreet(),
-				shippingAddress.getNumber(),
-				shippingAddress.getCity(),
-				shippingAddress.getState(),
-				shippingAddress.getZipCode(),
+		Address address = new Address(shippingAddress.getStreet(), shippingAddress.getNumber(),
+				shippingAddress.getCity(), shippingAddress.getState(), shippingAddress.getZipCode(),
 				shippingAddress.getCountry());
 		address = addressDao.create(address);
 

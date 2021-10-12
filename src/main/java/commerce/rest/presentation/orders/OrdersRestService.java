@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -49,7 +50,7 @@ public class OrdersRestService {
 		}
 		try {
 			return Response.ok(orderInterface.createOrder(order, address, productsId, customerId)).build();
-		} catch (SQLException e) {
+		} catch (SQLException | EntityNotFoundException e) {
 			return Response.status(Status.NOT_ACCEPTABLE).entity(e.getMessage()).build();
 		}
 	}

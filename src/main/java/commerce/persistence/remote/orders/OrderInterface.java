@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.ejb.Remote;
+import javax.persistence.EntityNotFoundException;
 
 import commerce.persistence.entities.Order;
 import commerce.rest.vo.AddressVO;
@@ -14,7 +15,7 @@ import commerce.rest.vo.OrderVO;
 public interface OrderInterface {
 
 	public Order createOrder(OrderVO order, AddressVO address, List<Long> productsId, Long customerId)
-			throws SQLException;
+			throws SQLException, EntityNotFoundException;
 
 	public void deleteOrder(Long id);
 
