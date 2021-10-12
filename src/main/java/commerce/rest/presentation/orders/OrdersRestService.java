@@ -69,7 +69,7 @@ public class OrdersRestService {
 
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Sets an order")
+	@ApiOperation(value = "deletes an order")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success") })
 	public Response delete(@PathParam("id") Long id) {
 		orderInterface.deleteOrder(id);
