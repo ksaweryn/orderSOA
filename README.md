@@ -36,12 +36,10 @@ then create package.
 To access documentation please go to 
 __http://localhost:8080/commerce/docs/__
 
-search by `commerce/api/swagger.json`
+search by `/commerce/api/swagger.json`
 
 
 ## To-Do
 
-- There are missing some functionalities regarding order management.
-- Implementation `CriteriaQuery` to control deletetion of data.
 - Correct JUnit 5 & Mockito 4 not mocking Interfaces. Test __disabled__. 
 
