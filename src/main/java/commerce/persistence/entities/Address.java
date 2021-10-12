@@ -2,13 +2,11 @@ package commerce.persistence.entities;
 
 import java.io.Serializable;
 
-import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,38 +19,38 @@ public class Address implements Serializable {
 	public Address() {
 	}
 
+	public Address(String street, int number, String city, String state, String zipCode, String country) {
+		super();
+		this.street = street;
+		this.number = number;
+		this.city = city;
+		this.state = state;
+		this.zipCode = zipCode;
+		this.country = country;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSequence")
 	@SequenceGenerator(name = "addressSequence", sequenceName = "commerce.address_id_seq", schema = "customer")
 	private Long id;
 
 	@Column
-	@JsonbProperty
 	private String street;
 
 	@Column
-	@JsonbProperty
 	private int number;
 
 	@Column
-	@JsonbProperty
 	private String city;
 
 	@Column
-	@JsonbProperty
 	private String state;
 
 	@Column
-	@JsonbProperty
 	private String zipCode;
 
 	@Column
-	@JsonbProperty
 	private String country;
-
-	@OneToOne
-	@JsonbProperty
-	private Customer customer;
 
 	// Getters & Setters
 	public Long getId() {
@@ -109,14 +107,6 @@ public class Address implements Serializable {
 
 	public void setCountry(String country) {
 		this.country = country;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 }

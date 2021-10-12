@@ -2,18 +2,34 @@ package commerce.rest.vo;
 
 import java.io.Serializable;
 
+import commerce.util.PaymentType;
+
 public class OrderVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String name;
+	private PaymentType paymentType;
 
-	public String getName() {
-		return name;
+	private Long customerId;
+
+	public OrderVO() {
+		super();
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	// Getters & Setters
+	public PaymentType getPaymentType() {
+		return paymentType;
 	}
 
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
 }

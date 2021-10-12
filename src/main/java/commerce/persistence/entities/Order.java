@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -28,6 +29,16 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Order() {
+	}
+
+	public Order(PaymentType paymentType, BigDecimal orderTotalValue, Customer customer, Address shippingAddress,
+			List<Product> products) {
+		super();
+		this.paymentType = paymentType;
+		this.orderTotalValue = orderTotalValue;
+		this.customer = customer;
+		this.shippingAddress = shippingAddress;
+		this.products = products;
 	}
 
 	@Id
@@ -55,6 +66,12 @@ public class Order implements Serializable {
 	@ManyToMany
 	private List<Product> products;
 
+	@PrePersist
+	public void beforePersist() {
+		this.orderDate = LocalDate.now();
+	}
+
+	// Getters & Setters
 	public Long getId() {
 		return id;
 	}
@@ -65,10 +82,6 @@ public class Order implements Serializable {
 
 	public LocalDate getOrderDate() {
 		return orderDate;
-	}
-
-	public void setOrderDate(LocalDate orderDate) {
-		this.orderDate = orderDate;
 	}
 
 	public PaymentType getPaymentType() {
