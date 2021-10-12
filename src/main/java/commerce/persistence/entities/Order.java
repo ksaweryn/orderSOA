@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,12 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import commerce.util.PaymentType;
 
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "ORDERS", schema = "commerce", catalog = "commerce")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,8 +31,9 @@ public class Order implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long orderNumber;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSequence")
+	@SequenceGenerator(name = "orderSequence", sequenceName = "order_id_seq", schema = "commerce")
+	private Long id;
 
 	@Column
 	private LocalDate orderDate;
@@ -44,22 +45,22 @@ public class Order implements Serializable {
 	@Column
 	private BigDecimal orderTotalValue;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
 	@OneToOne
 	private Address shippingAddress;
 
 	@ManyToMany
-	private List<Product> productsPurchases;
+	private List<Product> products;
 
-	public Long getOrderNumber() {
-		return orderNumber;
+	public Long getId() {
+		return id;
 	}
 
-	public void setOrderNumber(Long orderNumber) {
-		this.orderNumber = orderNumber;
+	public void setID(Long id) {
+		this.id = id;
 	}
 
 	public LocalDate getOrderDate() {
@@ -102,12 +103,12 @@ public class Order implements Serializable {
 		this.shippingAddress = shippingAddress;
 	}
 
-	public List<Product> getProductsPurchases() {
-		return productsPurchases;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setProductsPurchases(List<Product> productsPurchases) {
-		this.productsPurchases = productsPurchases;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 }

@@ -2,16 +2,24 @@ package commerce.persistence.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 
 @Entity
-@Table(name = "CUSTOMER")
+@Table(name = "CUSTOMER", schema = "commerce", catalog = "commerce", uniqueConstraints = {
+		@UniqueConstraint(name = "uniquePhone", columnNames = { "phone" }),
+		@UniqueConstraint(name = "uniqueEmail", columnNames = { "email" }) })
+@Access(AccessType.FIELD)
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,23 +34,25 @@ public class Customer implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Access(AccessType.PROPERTY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customerSequence")
+	@SequenceGenerator(name = "customerSequence", sequenceName = "customer_id_seq", schema = "customer")
 	private Long id;
 
 	@Column
 	private String name;
 
-	@Column(unique = true)
+	@Column(length = 20)
 	private String phone;
 
-	@Column(unique = true)
+	@Email
+	@Column(length = 100)
 	private String email;
 
 	@OneToOne
 	private Address shippingAddress;
 
 	// Getters & Setters
-
 	public Long getId() {
 		return id;
 	}

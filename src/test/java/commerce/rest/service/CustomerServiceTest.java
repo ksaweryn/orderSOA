@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,12 +25,12 @@ class CustomerServiceTest {
 	private CustomerDao customerDao;
 
 	@Test
-	void createCustomerTest() {
+	void createCustomerTest() throws SQLException {
 		Customer customerExpected = new Customer("any name", "any phone number", "any email");
 		when(customerDao.createCustomer(any(Customer.class))).thenReturn(customerExpected);
 
 		Customer customerCreated = customerService.createCustomer("any name", "any phone number", "any email");
-		
+
 		assertEquals(customerExpected, customerCreated);
 	}
 

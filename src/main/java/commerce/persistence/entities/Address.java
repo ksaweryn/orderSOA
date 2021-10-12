@@ -2,16 +2,18 @@ package commerce.persistence.entities;
 
 import java.io.Serializable;
 
+import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ADDRESS")
+@Table(name = "ADDRESS", schema = "customer", catalog = "commerce")
 public class Address implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,28 +22,36 @@ public class Address implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSequence")
+	@SequenceGenerator(name = "addressSequence", sequenceName = "commerce.address_id_seq", schema = "customer")
 	private Long id;
 
 	@Column
+	@JsonbProperty
 	private String street;
 
 	@Column
+	@JsonbProperty
 	private int number;
 
 	@Column
+	@JsonbProperty
 	private String city;
 
 	@Column
+	@JsonbProperty
 	private String state;
 
 	@Column
+	@JsonbProperty
 	private String zipCode;
 
 	@Column
+	@JsonbProperty
 	private String country;
 
 	@OneToOne
+	@JsonbProperty
 	private Customer customer;
 
 	// Getters & Setters

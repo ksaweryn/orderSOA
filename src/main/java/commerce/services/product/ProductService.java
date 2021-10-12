@@ -1,6 +1,7 @@
 package commerce.services.product;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -8,7 +9,7 @@ import javax.inject.Inject;
 
 import commerce.persistence.dao.product.ProductDao;
 import commerce.persistence.entities.Product;
-import commerce.persistence.remote.ProductInterface;
+import commerce.persistence.remote.products.ProductInterface;
 
 @Stateless
 public class ProductService implements ProductInterface {
@@ -24,12 +25,12 @@ public class ProductService implements ProductInterface {
 		return productDao.findById(id);
 	}
 
-	public Product createProduct(String description, BigDecimal price, Double weigth) {
+	public Product createProduct(String description, BigDecimal price, Double weigth) throws SQLException {
 		Product product = new Product(description, price, weigth);
 		return productDao.create(product);
 	}
 
-	public Product updateProduct(Long id, String description, BigDecimal price, Double weigth) {
+	public Product updateProduct(Long id, String description, BigDecimal price, Double weigth) throws SQLException {
 		Product product = productDao.findById(id);
 		product.setDescription(description);
 		product.setPrice(price);
@@ -39,8 +40,6 @@ public class ProductService implements ProductInterface {
 	}
 
 	public void deleteProduct(Long id) {
-		Product product = productDao.findById(id);
-		productDao.delete(product);
 
 	}
 

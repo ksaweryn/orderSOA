@@ -1,6 +1,7 @@
 package commerce.rest.presentation.customer;
 
 import java.net.URI;
+import java.sql.SQLException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -14,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
 import commerce.persistence.entities.Customer;
@@ -54,10 +56,16 @@ public class CustomerRestService {
 	@ApiOperation(value = "Create a new customer")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Created") })
 	public Response createCustomer(CustomerVO data) {
-		Customer customer = customerService.createCustomer(data.getName(), data.getPhone(), data.getEmail());
-		URI location = UriBuilder.fromResource(CustomerRestService.class).path("/{id}")
-				.resolveTemplate("id", customer.getId()).build();
-		return Response.created(location).build();
+		Customer customer;
+		try {
+			customer = customerService.createCustomer(data.getName(), data.getPhone(), data.getEmail());
+			URI location = UriBuilder.fromResource(CustomerRestService.class).path("/{id}")
+					.resolveTemplate("id", customer.getId()).build();
+			return Response.created(location).build();
+		} catch (SQLException e) {
+			return Response.status(Status.BAD_REQUEST).entity("Data sent not valid, please correct").build();
+		}
+
 	}
 
 	@PUT
@@ -65,8 +73,12 @@ public class CustomerRestService {
 	@ApiOperation(value = "Updates existing to do")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Updated"), @ApiResponse(code = 404, message = "Not found") })
 	public Response update(@PathParam("id") Long id, CustomerVO customer) {
-		customerService.updateCustomer(id, customer.getName(), customer.getPhone(), customer.getEmail());
-		return Response.ok().build();
+		try {
+			customerService.updateCustomer(id, customer.getName(), customer.getPhone(), customer.getEmail());
+			return Response.ok().build();
+		} catch (SQLException e) {
+			return Response.status(Status.BAD_REQUEST).entity("Update data not valid, please correct").build();
+		}
 	}
 
 	@DELETE

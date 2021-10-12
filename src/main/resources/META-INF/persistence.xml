@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
+	xsi:schemalocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
 	<persistence-unit name="commercePU"
 		transaction-type="JTA">
 
 		<jta-data-source>java:/commerceDS</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
+			<!-- <property
+				name="javax.persistence.schema-generation.create-source"
+				value="script" />
+			<property
+				name="javax.persistence.schema-generation.create-script-source"
+				value="META-INF/sql/create.sql" /> -->
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.MySQL8Dialect" />
 			<property
 				name="javax.persistence.schema-generation.database.action"
-				value="create" />
-			<!-- <property name="eclipselink.deploy-on-startup" value="true" />
-			<property name="javax.persistence.jdbc.driver"
-				value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/commerce" />
-			<property name="javax.persistence.jdbc.user"
-				value="root" />
-			<property name="javax.persistence.jdbc.password"
-				value="Admin2021" /> -->
+				value="drop-and-create" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>

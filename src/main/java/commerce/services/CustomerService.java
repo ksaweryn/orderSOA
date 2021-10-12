@@ -1,5 +1,6 @@
 package commerce.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -15,7 +16,7 @@ public class CustomerService implements CustomerInterface {
 	@Inject
 	private CustomerDao customerDao;
 
-	public Customer createCustomer(String name, String phone, String email) {
+	public Customer createCustomer(String name, String phone, String email) throws SQLException {
 		Customer customer = new Customer(name, phone, email);
 		return customerDao.createCustomer(customer);
 	}
@@ -29,12 +30,16 @@ public class CustomerService implements CustomerInterface {
 		return customer;
 	}
 
-	public Customer updateCustomer(Long id, String name, String phone, String email) {
-		Customer customer = customerDao.findById(id);
-		customer.setName(name);
-		customer.setPhone(phone);
-		customer.setEmail(email);
-		return customerDao.create(customer);
+	public Customer updateCustomer(Long id, String name, String phone, String email) throws SQLException {
+		try {
+			Customer customer = customerDao.findById(id);
+			customer.setName(name);
+			customer.setPhone(phone);
+			customer.setEmail(email);
+			return customerDao.create(customer);
+		} catch (NullPointerException e) {
+			throw new SQLException(e.getMessage());
+		}
 	}
 
 	public void deleteCustomer(Long id) {

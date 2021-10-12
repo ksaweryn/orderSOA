@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.sql.SQLException;
+
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 
 import org.junit.jupiter.api.Disabled;
@@ -33,7 +37,7 @@ class CustomerRestServiceTest {
 
 	@Test
 	@Disabled
-	public void createCustomer() {
+	public void createCustomer() throws ConstraintViolationException, PersistenceException, SQLException {
 		MockitoAnnotations.openMocks(this);
 		customer = new Customer();
 		customer.setId(1L);

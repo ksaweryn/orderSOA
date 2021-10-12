@@ -1,10 +1,12 @@
 package commerce.persistence.dao;
 
 import java.lang.reflect.ParameterizedType;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -20,9 +22,14 @@ public abstract class GenericDao<T> {
 				.getActualTypeArguments()[0];
 	}
 
-	public T create(T entity) {
-		em.persist(entity);
-		return entity;
+	public T create(T entity) throws SQLException {
+		try {
+			em.persist(entity);
+			em.flush();
+			return entity;
+		} catch (PersistenceException e) {
+			throw new SQLException(e);
+		}
 	}
 
 	public T update(T entity) {
